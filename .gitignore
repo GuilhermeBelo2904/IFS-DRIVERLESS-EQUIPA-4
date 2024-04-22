@@ -1,0 +1,42 @@
+# Existing ignore patterns
+.pio
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
+
+# Python virtual environments
+venv/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Python bytecode files
+*.py[cod]
+*$py.class
+
+# IDEs and editors
+.idea/
+.ipynb_checkpoints/
+*.sublime-workspace
+*.sublime-project
+
+# Jupyter Notebooks
+*.ipynb_checkpoints/
+
+# Test coverage and reports
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+.coverage*
+htmlcov/
+.cache/
+.mypy_cache/
+
+# Distribution and build directories
+/dist/
+/build/
+/*.egg-info/
