@@ -13,6 +13,19 @@ def send_left_command(event):
 def send_right_command(event):
     arduino_serial.write(b'R')  # Send 'R' to Arduino
     print("Sent 'R' to Arduino")
+    
+def send_forward_command(event):
+    arduino_serial.write(b'F')  # Send 'F' to Arduino
+    print("Sent 'F' to Arduino")    
+    
+def send_backward_command(event):
+    arduino_serial.write(b'B')  # Send 'B' to Arduino
+    print("Sent 'B' to Arduino")        
+    
+def send_stop_command(event):
+    arduino_serial.write(b'S')  # Send 'S' to Arduino
+    print("Sent 'S' to Arduino")
+    
 
 # Main function for the car control app
 def carControlApp():
@@ -26,12 +39,15 @@ def carControlApp():
     label = ctk.CTkLabel(window, text="Servo Control App", font=("Arial", 20))
     label.pack(pady=20)
 
-    status_label = ctk.CTkLabel(window, text="Press left or right arrow keys", font=("Arial", 16))
+    status_label = ctk.CTkLabel(window, text="Use arrow keys to control the car", font=("Arial", 12))
     status_label.pack(pady=10)
 
     # Bind arrow keys to corresponding commands
     window.bind("<Left>", send_left_command)
     window.bind("<Right>", send_right_command)
+    window.bind("<Up>", send_forward_command)
+    window.bind("<Down>", send_backward_command)
+    window.bind("<space>", send_stop_command)
 
     exit_button = ctk.CTkButton(window, text="Exit", command=window.quit)
     exit_button.pack(pady=20)
