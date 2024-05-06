@@ -1,7 +1,6 @@
 import serial
 import customtkinter as ctk
 
-# Open serial communication (modify 'COM3' to match your Arduino's COM port)
 arduino_serial = serial.Serial('COM6', 9600, timeout=1)  # Adjust COM port and baud rate if necessary
 
 # Function to send the left command
