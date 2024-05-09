@@ -1,3 +1,6 @@
+#ifndef CARCONTROL_HPP
+#define CARCONTROL_HPP
+
 #include <Servo.h>
 #include <Arduino.h>
 
@@ -16,7 +19,7 @@
 #define STOP_SPEED 90
 
 #define INITIAL_SERVO_POS 90
-#define MIN_SERVO_POS 0
+#define MIN_SERVO_POS 50
 #define MAX_SERVO_POS 180
 
 #define ESC_PIN 8
@@ -25,6 +28,8 @@
 #define ECHO_PIN 12
 
 void reactToObstacle(Servo ESC);
-int turn(Servo servo, char direction);
+int turn(Servo servo, int pos, char direction);
 int speedControl(Servo ESC, int currentSpeed, char command);
 int stop(Servo ESC, int currentSpeed);
+
+#endif

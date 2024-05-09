@@ -14,25 +14,21 @@ void reactToObstacle(Servo ESC) {
   int distanceCm = duration * 0.034 / 2;
 
   if (isObstacle(distanceCm)) {
-    ESC.write(90);
+    ESC.write(STOP_SPEED);
   }
 }
 
-int turn(Servo servo, char direction) {
+int turn(Servo servo, int pos, char direction) {
+  int newPos = pos;
   if (direction == TURN_LEFT_COMMAND) {
-    for (size_t i = 0; i < 6; i++) {
-        int pos = max(0, pos - 1);  
-        servo.write(pos);
-        return pos;  
-    } 
+    newPos = max(MIN_SERVO_POS, pos-6);
   } 
   if (direction == TURN_RIGHT_COMMAND) {
-    for (size_t i = 0; i < 6; i++) {
-        int pos = min(180, pos + 1);  
-        servo.write(pos);
-        return pos;  
-    } 
+    newPos = min(MAX_SERVO_POS, pos+6);
   }
+  servo.write(newPos);
+  delay(15);
+  return newPos;
 }
 
 int speedControl(Servo ESC, int currentSpeed, char command) {
@@ -46,7 +42,7 @@ int speedControl(Servo ESC, int currentSpeed, char command) {
                 newSpeed = STOP_SPEED;
                 break;
             default:
-                newSpeed = min(MAX_FORWARD_SPEED, currentSpeed++);
+                newSpeed = min(MAX_FORWARD_SPEED, currentSpeed+6);
                 break;
         }
     }
@@ -59,16 +55,18 @@ int speedControl(Servo ESC, int currentSpeed, char command) {
                 newSpeed = STOP_SPEED;
                 break;
             default:
-                newSpeed = max(MIN_BACKWARD_SPEED, currentSpeed--);
+                newSpeed = max(MIN_BACKWARD_SPEED, currentSpeed-6);
                 break;
         }
     }
     
     ESC.write(newSpeed);
+    delay(15);
     return newSpeed;
 }
 
 int stop(Servo ESC, int currentSpeed) {
     ESC.write(STOP_SPEED);
+    delay(15);
     return STOP_SPEED;
 }
