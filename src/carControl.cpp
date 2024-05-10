@@ -1,6 +1,22 @@
 #include "carControl.hpp"
 
-// void sensorSequence
+void sensorSequence() {
+  // TODO: Implement sensor sequence
+}
+
+void demoSequence() {
+  // TODO: Implement demo sequence
+}
+
+void ultrasonicSensorInit() {
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+}
 
 bool isObstacle(int distanceCm) {
   return distanceCm < 10 && distanceCm > 3;
@@ -9,14 +25,12 @@ bool isObstacle(int distanceCm) {
 bool reactToObstacle(Servo ESC) {
   long duration = pulseIn(ECHO_PIN, HIGH);
   int distanceCm = duration * 0.0343 / 2;
-  
   /*
   Serial.print("CM: ");
   Serial.print(distanceCm);
   Serial.print("\n");
   */
-    
-
+  
   return isObstacle(distanceCm);
 }
 
