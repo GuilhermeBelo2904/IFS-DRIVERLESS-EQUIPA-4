@@ -1,30 +1,33 @@
+import time
 import serial
 import customtkinter as ctk
 
-arduino_serial = serial.Serial('COM6', 9600, timeout=1)  # Adjust COM port and baud rate if necessary
+# Initialize the serial port with a lower baud rate to ensure compatibility
+# Baud rate 115200 is typically fine with Arduino Uno
+arduino_serial = serial.Serial('COM6', 9600, timeout=0.1)  # Adjust the baud rate and timeout
 
-# Function to send the left command
+time.sleep(2)  # Allow Arduino to reset
+
+# Function to send a command
+def send_command(command):
+    arduino_serial.write(command)
+    print(f"Sent '{command.decode()}' to Arduino")
+
+# Functions to send specific commands
 def send_left_command(event):
-    arduino_serial.write(b'L')  # Send 'L' to Arduino
-    print("Sent 'L' to Arduino")
+    send_command(b'L')
 
-# Function to send the right command
 def send_right_command(event):
-    arduino_serial.write(b'R')  # Send 'R' to Arduino
-    print("Sent 'R' to Arduino")
+    send_command(b'R')
     
 def send_forward_command(event):
-    arduino_serial.write(b'F')  # Send 'F' to Arduino
-    print("Sent 'F' to Arduino")    
+    send_command(b'F')
     
 def send_backward_command(event):
-    arduino_serial.write(b'B')  # Send 'B' to Arduino
-    print("Sent 'B' to Arduino")        
+    send_command(b'B')
     
 def send_stop_command(event):
-    arduino_serial.write(b'S')  # Send 'S' to Arduino
-    print("Sent 'S' to Arduino")
-    
+    send_command(b'S')
 
 # Main function for the car control app
 def carControlApp():
@@ -33,9 +36,9 @@ def carControlApp():
 
     window = ctk.CTk()
     window.geometry("400x300")
-    window.title("Servo Control App")
+    window.title("Car Control App")
 
-    label = ctk.CTkLabel(window, text="Servo Control App", font=("Arial", 20))
+    label = ctk.CTkLabel(window, text="Car Control App", font=("Arial", 20))
     label.pack(pady=20)
 
     status_label = ctk.CTkLabel(window, text="Use arrow keys to control the car", font=("Arial", 12))

@@ -27,9 +27,9 @@
 #define TRIG_PIN 11
 #define ECHO_PIN 12
 
-void reactToObstacle(Servo ESC);
+bool reactToObstacle(Servo ESC);
 int turn(Servo servo, int pos, char direction);
 int speedControl(Servo ESC, int currentSpeed, char command);
-int stop(Servo ESC, int currentSpeed);
+int stop(Servo ESC);
 
 #endif

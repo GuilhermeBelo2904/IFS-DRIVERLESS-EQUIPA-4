@@ -1,5 +1,12 @@
 #include "carControl.hpp"
 
+void LEDSequence() {
+  digitalWrite(3, HIGH);
+  delay(1000);
+  digitalWrite(3, LOW);
+  delay(1000);
+}
+
 Servo myservo;  // create servo object to control a servo
 Servo ESC;      // create servo object to control the ECS servo motor
 
@@ -9,38 +16,49 @@ int currentSpeed = STOP_SPEED;
 void setup() {
   ESC.attach(ESC_PIN);
   myservo.attach(SERVO_PIN); 
+  pinMode(3, OUTPUT);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
-  Serial.begin(ARDUINO_UNO_BAUD_RATE); 
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+  Serial.begin(ARDUINO_UNO_BAUD_RATE);
 }
 
 void loop() {
-  reactToObstacle(ESC);
+  if(reactToObstacle(ESC)) {
+    currentSpeed = stop(ESC);
+  }
   
   if (Serial.available() > 0) {  // check if there is data in the serial buffer
     char command = Serial.read();  
     
-    switch (command){
-      case TURN_LEFT_COMMAND:
-        pos = turn(myservo, pos, TURN_LEFT_COMMAND);
-        break;
-      case TURN_RIGHT_COMMAND:
-        pos = turn(myservo, pos, TURN_RIGHT_COMMAND);
-        break;
-      case FORWARD_COMMAND:
-        currentSpeed = speedControl(ESC, currentSpeed, FORWARD_COMMAND);
-        break;
-      case BACKWARD_COMMAND:
-        currentSpeed = speedControl(ESC, currentSpeed, BACKWARD_COMMAND);
-        break;
-      case STOP_COMMAND:
-        currentSpeed = stop(ESC, currentSpeed);
-        break;      
-      default:
-        break;
+    if (command == TURN_LEFT_COMMAND) {
+      pos = turn(myservo, pos, TURN_LEFT_COMMAND);
+    } else if (command == TURN_RIGHT_COMMAND) {
+      pos = turn(myservo, pos, TURN_RIGHT_COMMAND);
+    } else if (command == FORWARD_COMMAND) {
+      currentSpeed = speedControl(ESC, currentSpeed, FORWARD_COMMAND);
+    } else if (command == BACKWARD_COMMAND) {
+      currentSpeed = speedControl(ESC, currentSpeed, BACKWARD_COMMAND);
+    } else if (command == STOP_COMMAND) {
+      currentSpeed = stop(ESC);
     }
   }
 }
+
+/*
+void loop() {
+  int x = reactToObstacle(ESC);
+  Serial.print("Is Obstacle: ");
+  Serial.print(x);
+  Serial.print("\n");
+  Serial.print("\n");
+}
+*/
+
 
 
 

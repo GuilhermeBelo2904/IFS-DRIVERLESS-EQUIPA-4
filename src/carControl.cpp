@@ -1,21 +1,23 @@
 #include "carControl.hpp"
 
+// void sensorSequence
+
 bool isObstacle(int distanceCm) {
-  return distanceCm < 10;
+  return distanceCm < 10 && distanceCm > 3;
 }
 
-void reactToObstacle(Servo ESC) {
-  digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
+bool reactToObstacle(Servo ESC) {
   long duration = pulseIn(ECHO_PIN, HIGH);
-  int distanceCm = duration * 0.034 / 2;
+  int distanceCm = duration * 0.0343 / 2;
+  
+  /*
+  Serial.print("CM: ");
+  Serial.print(distanceCm);
+  Serial.print("\n");
+  */
+    
 
-  if (isObstacle(distanceCm)) {
-    ESC.write(STOP_SPEED);
-  }
+  return isObstacle(distanceCm);
 }
 
 int turn(Servo servo, int pos, char direction) {
@@ -65,7 +67,7 @@ int speedControl(Servo ESC, int currentSpeed, char command) {
     return newSpeed;
 }
 
-int stop(Servo ESC, int currentSpeed) {
+int stop(Servo ESC) {
     ESC.write(STOP_SPEED);
     delay(15);
     return STOP_SPEED;
