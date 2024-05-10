@@ -6,6 +6,10 @@
 
 #define ARDUINO_UNO_BAUD_RATE 9600
 
+#define AUTOMATIC_MODE 'A'
+#define MANUAL_MODE 'M'
+#define EXIT_MODE 'E'
+
 #define TURN_LEFT_COMMAND 'L'
 #define TURN_RIGHT_COMMAND 'R'
 #define FORWARD_COMMAND 'F'
@@ -24,10 +28,11 @@
 
 #define ESC_PIN 8
 #define SERVO_PIN 9
-#define TRIG_PIN 11
-#define ECHO_PIN 12
+#define TRIG_PIN 10
+#define ECHO_PIN 13
 
-void ultrasonicSensorInit();
+void automaticMode(Servo ESC, Servo servo);
+void manualMode(Servo ESC, Servo servo);
 bool reactToObstacle(Servo ESC);
 int turn(Servo servo, int pos, char direction);
 int speedControl(Servo ESC, int currentSpeed, char command);

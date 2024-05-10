@@ -6,8 +6,6 @@ import customtkinter as ctk
 # Baud rate 115200 is typically fine with Arduino Uno
 arduino_serial = serial.Serial('COM6', 9600, timeout=0.1)  # Adjust the baud rate and timeout
 
-time.sleep(2)  # Allow Arduino to reset
-
 # Function to send a command
 def send_command(command):
     arduino_serial.write(command)
@@ -28,6 +26,18 @@ def send_backward_command(event):
     
 def send_stop_command(event):
     send_command(b'S')
+    
+def send_automatic_mode_command(event):
+    send_command(b'A')
+    print("Switched to automatic mode")
+    
+def send_manual_mode_command(event):
+    send_command(b'M')
+    print("Switched to manual mode")
+    
+def send_exit_mode_command(event):
+    send_command(b'E')        
+    print("Exiting the choosen mode...")    
 
 # Main function for the car control app
 def carControlApp():
@@ -50,6 +60,9 @@ def carControlApp():
     window.bind("<Up>", send_forward_command)
     window.bind("<Down>", send_backward_command)
     window.bind("<space>", send_stop_command)
+    window.bind("<a>", send_automatic_mode_command)
+    window.bind("<m>", send_manual_mode_command)
+    window.bind("<e>", send_exit_mode_command)
 
     exit_button = ctk.CTkButton(window, text="Exit", command=window.quit)
     exit_button.pack(pady=20)

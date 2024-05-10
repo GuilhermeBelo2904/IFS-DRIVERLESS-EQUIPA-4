@@ -3,43 +3,26 @@
 Servo myservo;  // Create servo object to control a servo
 Servo ESC;      // Create servo object to control the ECS servo motor
 
-int pos = INITIAL_SERVO_POS;
-int currentSpeed = STOP_SPEED;
-
 void setup() {
   ESC.attach(ESC_PIN);
   myservo.attach(SERVO_PIN); 
-  ultrasonicSensorInit();
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
   Serial.begin(ARDUINO_UNO_BAUD_RATE);
 }
 
 void loop() {
-  if (reactToObstacle(ESC)) {
-    currentSpeed = stop(ESC);
-  }
+  ESC.write(STOP_SPEED);
+  if (Serial.available() > 0){
+    char mode = Serial.read();
 
-  if (Serial.available() > 0) {  // Check if there is data in the serial buffer
-    char command = Serial.read();
-
-    switch (command) {
-      case TURN_LEFT_COMMAND:
-        pos = turn(myservo, pos, TURN_LEFT_COMMAND);
+    switch (mode) {
+      case AUTOMATIC_MODE:
+        automaticMode(ESC, myservo);
         break;
 
-      case TURN_RIGHT_COMMAND:
-        pos = turn(myservo, pos, TURN_RIGHT_COMMAND);
-        break;
-
-      case FORWARD_COMMAND:
-        currentSpeed = speedControl(ESC, currentSpeed, FORWARD_COMMAND);
-        break;
-
-      case BACKWARD_COMMAND:
-        currentSpeed = speedControl(ESC, currentSpeed, BACKWARD_COMMAND);
-        break;
-
-      case STOP_COMMAND:
-        currentSpeed = stop(ESC);
+      case MANUAL_MODE:
+        manualMode(ESC, myservo);
         break;
 
       default:
@@ -47,3 +30,12 @@ void loop() {
     }
   }
 }
+
+
+/*
+void loop() {
+  reactToObstacle(ESC);
+  delay(100);
+}
+*/
+
